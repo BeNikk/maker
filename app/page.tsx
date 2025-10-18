@@ -6,26 +6,27 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation";
 
 export default  function Home() {
   const [value,setValue] = useState("");
   const trpc = useTRPC();
-  const {data:messages} = useQuery(trpc.messages.getMany.queryOptions());
-  const invoke = useMutation(trpc.messages.create.mutationOptions({
-    onSuccess:()=>{
-      toast.success("BG job started");
+  const router = useRouter();
+  const createProject = useMutation(trpc.projects.create.mutationOptions({
+    onSuccess:(data)=>{
+      router.push(`/project/${data.id}`)
     }
-  }));
+  }))
+
   return (
-    <div>
+    <div className="h-screen w-screen flex items-center justify-center">
       test
       <Button onClick={()=>{
-        invoke.mutate({value:value});
+        createProject.mutate({value:value });
       }}>
-        Click
+        Submit
       </Button>
       <Input value={value} onChange={(e)=>{setValue(e.target.value)}}/>
-      {JSON.stringify(messages,null,2)}
     </div>
 
   );

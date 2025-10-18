@@ -8,7 +8,8 @@ export const messageRouter = createTRPCRouter({
     .input(
         z.object(
             {
-                value:z.string().min(1,{message:"should be of min 1 length"})
+                value:z.string().min(1,{message:"should be of min 1 length"}),
+                projectId:z.string().min(1,{message:"Project id is required"})
             }
         )
     ).mutation(async({input})=>{
@@ -16,13 +17,15 @@ export const messageRouter = createTRPCRouter({
             data:{
                 content:input.value,
                 role:"USER",
-                type:"RESULT"
+                type:"RESULT",
+                projectId:input.projectId
             }
         })
         await inngest.send({
             name:"code-agent/run",
             data:{
-                value:input.value
+                value:input.value,
+                projectId:input.projectId
             }
         })
         return newMessage;
