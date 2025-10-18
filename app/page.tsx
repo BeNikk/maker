@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc/client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input"
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 export default  function Home() {
   const [value,setValue] = useState("");
   const trpc = useTRPC();
+  const {data:messages} = useQuery(trpc.messages.getMany.queryOptions());
   const invoke = useMutation(trpc.messages.create.mutationOptions({
     onSuccess:()=>{
       toast.success("BG job started");
@@ -24,6 +25,7 @@ export default  function Home() {
         Click
       </Button>
       <Input value={value} onChange={(e)=>{setValue(e.target.value)}}/>
+      {JSON.stringify(messages,null,2)}
     </div>
 
   );

@@ -20,11 +20,23 @@ export const messageRouter = createTRPCRouter({
             }
         })
         await inngest.send({
-            name:"test/hello.world",
+            name:"code-agent/run",
             data:{
                 value:input.value
             }
         })
         return newMessage;
+    }),
+    getMany:baseProcedure
+    .query(async()=>{
+        const messages = await prisma.message.findMany({
+            orderBy:{
+                updatedAt:"asc"
+            },
+            include:{
+                fragment:true
+            }
+        })
+        return messages;
     })
 })
