@@ -2,9 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc/client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { toast } from "sonner";
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation";
 
