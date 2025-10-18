@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 export default  function Home() {
   const [value,setValue] = useState("");
   const trpc = useTRPC();
-  const invoke = useMutation(trpc.callInngest.mutationOptions({
+  const invoke = useMutation(trpc.messages.create.mutationOptions({
     onSuccess:()=>{
       toast.success("BG job started");
     }
