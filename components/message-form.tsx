@@ -3,11 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import TextareaAutosize from "react-textarea-autosize";
 import z from "zod";
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, FormField } from "./ui/form";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { ArrowUp, ArrowUpIcon, Loader2Icon } from "lucide-react";
+import {  ArrowUpIcon, Loader2Icon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
 
 const formSchema = z.object({
@@ -15,7 +15,15 @@ const formSchema = z.object({
 });
 export const MessageForm = ({ projectId }: { projectId: string }) => {
   const trpc = useTRPC();
-  const createMessage = useMutation(trpc.messages.create.mutationOptions());
+  const queryClient = useQueryClient();
+  const createMessage = useMutation(trpc.messages.create.mutationOptions(
+    {
+        onSuccess:(data)=>{
+            form.reset()
+            queryClient.invalidateQueries(trpc.messages.getMany.queryOptions({projectId}))
+        },
+    }
+  ));
   const isPending = createMessage.isPending;
 
   const [isFocused, setIsFocused] = useState(false);
