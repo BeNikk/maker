@@ -1,5 +1,5 @@
 import { inngest } from "./client";
-import { createAgent, createNetwork, createTool, gemini } from "@inngest/agent-kit";
+import { createAgent, createNetwork, gemini } from "@inngest/agent-kit";
 import { Sandbox } from "@e2b/code-interpreter";
 import getSandbox, { lastMessageAssistant } from "./utils";
 import { createOrUpdateFiles, readFilesTool, terminalTool } from "./tools";
