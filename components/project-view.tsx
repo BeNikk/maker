@@ -69,10 +69,10 @@ export const ProjectView = ({ projectId }: Props) => {
                 <div className="ml-auto flex items-center gap-x-2"></div>
               </TabsList>
             </div>
-            <TabsContent value="preview">
+            <TabsContent value="preview" >
               {activeFragment && <FragmentView data={activeFragment} />}
             </TabsContent>
-            <TabsContent value="code" className="h-full m-0">
+            <TabsContent value="code" className="min-h-0">
                 {activeFragment?.files && (
                     <FileExplorer
                     files={activeFragment.files as {[path:string]:string}}

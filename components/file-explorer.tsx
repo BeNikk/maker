@@ -4,6 +4,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "./ui/resizable";
+import { CodeView } from "./code-view";
 
 type FileCollection = { [path: string]: string };
 
@@ -19,12 +20,21 @@ export const FileExplorer = ({ files }: FileExplorerProps) => {
   return (
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={30} minSize={30} className="bg-sidebar">
+
         <p>tree</p>
       </ResizablePanel>
       <ResizableHandle className="hover:bg-primary transition-colors" />
       <ResizablePanel defaultSize={70} minSize={30}>
         {selectedFile && files[selectedFile] ? (
-          <div>code view</div>
+            <div className="h-full w-full flex flex-col">
+                <div className="flex-1 overflow-auto ">
+                    <CodeView
+                    code={files[selectedFile]}
+                    lang={getLanguageFromFile(selectedFile)}
+                    />
+                </div>
+            </div>
+
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">
             Select a file to view its components
