@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import Image from "next/image";
 import { CodeIcon } from "lucide-react";
 export const MessageCard = ({
-  key,
   content,
   role,
   fragment,

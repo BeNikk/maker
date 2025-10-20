@@ -8,13 +8,13 @@ import {
   ResizablePanelGroup,
 } from "./ui/resizable";
 import { MessageContainer } from "./message-container";
-import { Suspense, useState } from "react";
+import {  Suspense, useState } from "react";
 import { Fragment } from "@/lib/generated/prisma";
 import { ProjectHeader } from "./message-header";
 import { FragmentView } from "./fragment";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { CodeIcon, EyeIcon } from "lucide-react";
-import { CodeView } from "./code-view";
+import { FileExplorer } from "./file-explorer";
 
 interface Props {
   projectId: string;
@@ -73,10 +73,11 @@ export const ProjectView = ({ projectId }: Props) => {
               {activeFragment && <FragmentView data={activeFragment} />}
             </TabsContent>
             <TabsContent value="code" className="h-full m-0">
-                <CodeView
-                lang="ts"
-                code="const a = `hello world` "
-                />
+                {activeFragment?.files && (
+                    <FileExplorer
+                    files={activeFragment.files as {[path:string]:string}}
+                    />
+                )}
             </TabsContent>
           </Tabs>
         </ResizablePanel>
