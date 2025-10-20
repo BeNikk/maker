@@ -91,10 +91,6 @@ export const ProjectForm = () => {
           </Button>
         </div>
       </form>
-      <div className="flex-wrap justify-center gap-2 hidden md:flex max-w-3xl">
-
-
-      </div>
     </Form>
   );
 };
