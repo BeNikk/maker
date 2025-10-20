@@ -47,7 +47,8 @@ const {setTheme,theme }=useTheme();
                     </DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                         <DropdownMenuSubContent>
-                            <DropdownMenuRadioGroup value="light" onChange={setTheme}>
+                            <DropdownMenuRadioGroup value={theme} onValueChange ={setTheme}
+                            >
                                 <DropdownMenuRadioItem value ="light">
                                     <span>Light</span>
                                 </DropdownMenuRadioItem>
