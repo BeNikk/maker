@@ -12,6 +12,10 @@ import { Suspense, useState } from "react";
 import { Fragment } from "@/lib/generated/prisma";
 import { ProjectHeader } from "./message-header";
 import { FragmentView } from "./fragment";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { CodeIcon, EyeIcon } from "lucide-react";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 interface Props {
   projectId: string;
@@ -19,6 +23,7 @@ interface Props {
 
 export const ProjectView = ({ projectId }: Props) => {
   const [activeFragment, setActiveFragment] = useState<Fragment | null>(null);
+  const [tabState, setTabState] = useState<"preview" | "code">("preview");
 
   const trpc = useTRPC();
   const { data: project } = useSuspenseQuery(
@@ -35,7 +40,7 @@ export const ProjectView = ({ projectId }: Props) => {
           minSize={20}
           className="flex flex-col min-h-0"
         >
-            <ProjectHeader projectId = {projectId}/>
+          <ProjectHeader projectId={projectId} />
           <Suspense fallback={<p>Loading...</p>}>
             <MessageContainer
               projectId={projectId}
@@ -46,7 +51,32 @@ export const ProjectView = ({ projectId }: Props) => {
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={65} minSize={50}>
-           {activeFragment && <FragmentView data={activeFragment}/> } 
+          <Tabs
+            className="h-full gap-y-0"
+            defaultValue="preview"
+            value={tabState}
+            onValueChange={(value) => setTabState(value as "preview" | "code")}
+          >
+            <div className="w-full flex items-center p-2 border-b gap-x-2">
+              <TabsList className="h-8 p-0 border rounded-md">
+                <TabsTrigger value="preview" className="rounded-md">
+                  <EyeIcon />
+                  <span>Demo</span>
+                </TabsTrigger>
+                <TabsTrigger value="code" className="rounded-md">
+                  <CodeIcon />
+                  <span>Code</span>
+                </TabsTrigger>
+                <div className="ml-auto flex items-center gap-x-2"></div>
+              </TabsList>
+            </div>
+            <TabsContent value="preview">
+              {activeFragment && <FragmentView data={activeFragment} />}
+            </TabsContent>
+            <TabsContent value="code">
+
+            </TabsContent>
+          </Tabs>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

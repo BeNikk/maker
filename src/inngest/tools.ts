@@ -35,7 +35,7 @@ export function terminalTool(sandboxId: string) {
 
 export function createOrUpdateFiles(sandboxId: string) {
   return createTool({
-    name: "createOrUpdateFiles",
+    name: "create_or_update_files",
     description: "create or update files in the sandbox",
     parameters: z.object({
       files: z.array(
@@ -46,7 +46,7 @@ export function createOrUpdateFiles(sandboxId: string) {
       ),
     }),
     handler: async ({ files }, { step, network }) => {
-      const newFiles = await step?.run("createOrUpdateFiles", async () => {
+      const newFiles = await step?.run("create_or_update_files", async () => {
         try {
           const updatedFiles = network.state.data.files || {};
           const sandbox = await getSandbox(sandboxId);
