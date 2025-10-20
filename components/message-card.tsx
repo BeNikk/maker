@@ -123,9 +123,9 @@ const FragmentCard = ({
       <div className="flex flex-col flex-1">
         <span className="text-sm font-medium line-clamp-1">
           {" "}
-          {fragment.title}
+          
         </span>
-        <span className="text-sm font-medium line-clamp-1"> Preview</span>
+        <span className="text-sm font-medium line-clamp-1">See your site</span>
       </div>
     </button>
   );

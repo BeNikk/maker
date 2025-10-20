@@ -15,15 +15,15 @@ export const MessageContainer = ({projectId, activeFragment, setActiveFragment}:
     },{
         refetchInterval: 5000
     }))
-    useEffect(()=>{
-        const lastAssistantMessage = messages.findLast(
-            (message)=>message.role == "ASSISTANT"
-        )
-        if(lastAssistantMessage){
-            setActiveFragment(lastAssistantMessage.fragment);   
-        }
+    // useEffect(()=>{
+    //     const lastAssistantMessage = messages.findLast(
+    //         (message)=>message.role == "ASSISTANT"
+    //     )
+    //     if(lastAssistantMessage){
+    //         setActiveFragment(lastAssistantMessage.fragment);   
+    //     }
 
-    },[])
+    // },[])
     useEffect(()=>{
         bottomRef.current?.scrollIntoView();
 

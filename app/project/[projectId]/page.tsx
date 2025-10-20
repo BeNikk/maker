@@ -19,7 +19,6 @@ const Page = async({params}: {params:Promise<{projectId:string}>})=>{
             <Suspense fallback={<>Loading</>}> 
             <ProjectView projectId={projectId} />
             </Suspense>
-            projectId: {projectId}
         </HydrationBoundary>
     )
 
