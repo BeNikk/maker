@@ -9,21 +9,21 @@ import { MessageLoading } from "./message-loader";
 export const MessageContainer = ({projectId, activeFragment, setActiveFragment}:{  projectId:string, activeFragment:Fragment | null, setActiveFragment:(fragment:Fragment | null)=> void}) =>{
     const trpc = useTRPC();
     const bottomRef = useRef<HTMLDivElement>(null);
+    const lastMessageAssistantIdRef = useRef<string | null>(null);
     
     const {data:messages} = useSuspenseQuery(trpc.messages.getMany.queryOptions({
         projectId:projectId
     },{
         refetchInterval: 5000
     }))
-    // useEffect(()=>{
-    //     const lastAssistantMessage = messages.findLast(
-    //         (message)=>message.role == "ASSISTANT"
-    //     )
-    //     if(lastAssistantMessage){
-    //         setActiveFragment(lastAssistantMessage.fragment);   
-    //     }
+    useEffect(()=>{
+        const lastAssistantMessage = messages.findLast((message)=>message.role =="ASSISTANT");
+        if(lastAssistantMessage?.fragment && lastAssistantMessage.id !==lastMessageAssistantIdRef.current){
+            setActiveFragment(lastAssistantMessage.fragment);
+            lastMessageAssistantIdRef.current = lastAssistantMessage.id;
+        }
 
-    // },[])
+    },[messages,setActiveFragment])
     useEffect(()=>{
         bottomRef.current?.scrollIntoView();
 
