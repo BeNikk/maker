@@ -20,7 +20,7 @@ export const FileExplorer = ({ files }: FileExplorerProps) => {
   return (
     <ResizablePanelGroup direction="horizontal">
       <ResizablePanel defaultSize={30} minSize={30} className="bg-sidebar">
-
+        <TreeView/>
         <p>tree</p>
       </ResizablePanel>
       <ResizableHandle className="hover:bg-primary transition-colors" />
