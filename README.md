@@ -3,5 +3,4 @@ Make your websites with a prompt
 
 ## Demo
 
-<video controls src="./public/maker-demo.mp4" title="Title">Demo</video>
-
+![Maker Demo](https://github.com/user-attachments/assets/82bed64d-74ec-4d16-8530-b716d936c72c)
