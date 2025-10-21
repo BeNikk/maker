@@ -13,7 +13,9 @@ export const codeAgent = inngest.createFunction(
     // Create a new agent with a system prompt (you can add optional tools, too)
     const sandboxId = await step.run("get-sandbox-id", async() => {
       const sbx = await Sandbox.create("unlovable-next-test2");
+      await sbx.setTimeout(60000*10);
       return sbx.sandboxId;
+
     });
     const previousMessages = await step.run("get-previous-messages",async()=>{
         const formattedMessage :Message[]= [];
@@ -23,7 +25,9 @@ export const codeAgent = inngest.createFunction(
             },
             orderBy:{
                 createdAt:"desc"
-            }
+            },
+            take:5,
+
         })
         for (const message of messages){
             formattedMessage.push({
@@ -32,7 +36,7 @@ export const codeAgent = inngest.createFunction(
                 content:message.content
             })
         }
-        return formattedMessage;
+        return formattedMessage.reverse();
     })
     const state = createState({
             summary:"",
