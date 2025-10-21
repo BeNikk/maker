@@ -1,10 +1,10 @@
 import z from "zod";
-import { baseProcedure, createTRPCRouter } from "../init";
+import { protectedProcedure, createTRPCRouter } from "../init";
 import prisma from "@/lib/prisma";
 import { inngest } from "@/src/inngest/client";
 
 export const messageRouter = createTRPCRouter({
-    create:baseProcedure
+    create:protectedProcedure
     .input(
         z.object(
             {
@@ -30,7 +30,7 @@ export const messageRouter = createTRPCRouter({
         })
         return newMessage;
     }),
-    getMany:baseProcedure
+    getMany:protectedProcedure
     .input(z.object({
         projectId:z.string().min(1,{message:"Project Id is required"})
     }))
