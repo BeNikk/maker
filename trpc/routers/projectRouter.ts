@@ -13,12 +13,13 @@ export const projectRouter = createTRPCRouter({
                 value:z.string().min(1,{message:"should be of min 1 length"})
             }
         )
-    ).mutation(async({input})=>{
+    ).mutation(async({input,ctx})=>{
         const createdProject = await prisma.project.create({
             data:{
                 name:generateSlug(2,{
                     format:"title"
                 }),
+                userId: ctx.auth.userId,
                 messages:{
                     create:{
                         content:input.value,
@@ -40,8 +41,11 @@ export const projectRouter = createTRPCRouter({
         return createdProject;
     }),
     getMany:protectedProcedure
-    .query(async()=>{
+    .query(async({ctx})=>{
         const projects = await prisma.project.findMany({
+            where:{
+                userId:ctx.auth.userId
+            },
             orderBy:{
                 updatedAt:"asc"
             },
@@ -52,10 +56,11 @@ export const projectRouter = createTRPCRouter({
     getOne:protectedProcedure
     .input(z.object({
         id: z.string().min(1,{message:"Id is required"})
-    })).query(async({input})=>{
+    })).query(async({input,ctx})=>{
         const project = await prisma.project.findUnique({
             where:{
-                id:input.id
+                id:input.id,
+                userId:ctx.auth.userId
             }
         })
         if(!project){

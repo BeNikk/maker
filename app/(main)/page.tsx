@@ -4,12 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import { ProjectForm } from "@/components/project-form";
 import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, CalendarIcon, CodeIcon, FolderIcon } from "lucide-react";
+import { ArrowRight, CalendarIcon, FolderIcon } from "lucide-react";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 
 export default function Home() {
+  const {user} = useUser();
   const trpc = useTRPC();
 
   const { data: projects, isLoading } = useQuery(
@@ -42,7 +42,7 @@ export default function Home() {
       <section className="space-y-6 pb-16">
         <div className="text-center space-y-2">
           <h2 className="text-2xl md:text-3xl font-bold">
-            Your Projects
+          {user?.firstName}&apos;s Projects
           </h2>
           <p className="text-muted-foreground">
             Continue working on your previous projects or create something new
