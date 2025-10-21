@@ -1,5 +1,5 @@
 import { inngest } from "./client";
-import { createAgent, createNetwork, gemini } from "@inngest/agent-kit";
+import { createAgent, createNetwork, createState, gemini, Message } from "@inngest/agent-kit";
 import { Sandbox } from "@e2b/code-interpreter";
 import getSandbox, { lastMessageAssistant } from "./utils";
 import { createOrUpdateFiles, readFilesTool, terminalTool } from "./tools";
@@ -15,6 +15,31 @@ export const codeAgent = inngest.createFunction(
       const sbx = await Sandbox.create("unlovable-next-test2");
       return sbx.sandboxId;
     });
+    const previousMessages = await step.run("get-previous-messages",async()=>{
+        const formattedMessage :Message[]= [];
+        const messages = await prisma.message.findMany({
+            where:{
+                projectId:event.data.projectId
+            },
+            orderBy:{
+                createdAt:"desc"
+            }
+        })
+        for (const message of messages){
+            formattedMessage.push({
+                type:"text",
+                role:message.role ==="ASSISTANT"? "assistant":"user",
+                content:message.content
+            })
+        }
+        return formattedMessage;
+    })
+    const state = createState({
+            summary:"",
+            files:{}
+    },{
+        messages:previousMessages
+    })
     const coder = createAgent({
       name: "code-agent",
       description:"Expert, senior coding agent",
@@ -42,6 +67,7 @@ export const codeAgent = inngest.createFunction(
         name:"Coding agent network",
         agents:[coder],
         maxIter:15,
+        defaultState:state,
         router:async ({network})=>{
             const summary = network.state.data.summary;
             if(summary){
@@ -50,7 +76,7 @@ export const codeAgent = inngest.createFunction(
             return coder;
         }
     })
-    const result = await network.run(event.data.value);
+    const result = await network.run(event.data.value,{state:state});
     // await step.sleep("wait-a-moment", "10s");
     const sandBoxUrl = await step.run("get-sandbox-url",async()=>{
         const sandbox = await getSandbox(sandboxId);
