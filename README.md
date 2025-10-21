@@ -3,4 +3,8 @@ Make your websites with a prompt
 
 ## Demo
 
-![Maker Demo](https://github.com/user-attachments/assets/82bed64d-74ec-4d16-8530-b716d936c72c)
+
+https://github.com/user-attachments/assets/2732e090-4976-4c0f-9cab-d763a3c5582f
+
+
+
