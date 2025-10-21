@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CalendarIcon, CodeIcon, FolderIcon } from "lucide-react";
+import { ArrowRight, CalendarIcon, CodeIcon, FolderIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -96,38 +96,45 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
-    <Card className="group hover:shadow-lg transition-all duration-200 hover:border-primary/50">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="space-y-1 flex-1">
-            <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
-              {project.name}
-            </CardTitle>
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <CalendarIcon className="h-4 w-4" />
-              <span>{new Date(project.createdAt).toLocaleDateString()}</span>
+    <Link href={`/project/${project.id}`}>
+      <Card className="group relative h-full overflow-hidden border-border/50 bg-gradient-to-br from-card to-card/95 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 cursor-pointer">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+        <CardHeader className="pb-4 relative z-10">
+          <div className="flex items-start justify-between gap-3">
+            <div className="space-y-2 flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                <Image 
+                src = "/logo.svg"
+                alt = "logo"
+                width={20}
+                height={20}
+                />
+                </div>
+                <CardTitle className="text-lg font-semibold line-clamp-2 group-hover:text-primary transition-colors duration-200">
+                  {project.name}
+                </CardTitle>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <CalendarIcon className="h-3.5 w-3.5 flex-shrink-0" />
+                <span className="text-xs">{new Date(project.createdAt).toLocaleDateString()}</span>
+              </div>
             </div>
           </div>
-          <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
-            Active
-          </Badge>
-        </div>
-      </CardHeader>
-      
-      <CardContent className="pt-0 space-y-3">
-        <CardDescription className="line-clamp-2">
-          Last updated {new Date(project.updatedAt).toLocaleDateString()}
-        </CardDescription>
-        
-        <div className="flex items-center gap-2">
-          <Button asChild size="sm" className="flex-1">
-            <Link href={`/project/${project.id}`}>
-              <CodeIcon className="h-4 w-4 mr-1" />
-              Open Project
-            </Link>
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
+        </CardHeader>
+
+        <CardContent className="pt-0 pb-4 space-y-4 relative z-10">
+          <CardDescription className="line-clamp-2 text-xs">
+            Updated {new Date(project.updatedAt).toLocaleDateString()}
+          </CardDescription>
+
+          <div className="flex items-center justify-between pt-2 border-t border-border/30">
+            <span className="text-xs font-medium text-muted-foreground">Open project</span>
+            <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-200" />
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
+  )
+}
